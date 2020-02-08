@@ -127,5 +127,4 @@ dmypy.json
 output/
 
 .vscode/
-
-*firebase-adminsdk*.json
+jupyter_notebook/

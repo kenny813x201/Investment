@@ -8,6 +8,7 @@ import csv
 
 
 def save_csv(element):
+    """Save top 500 stocks in base on volumn"""
     companies = element.find_elements_by_xpath('./tbody/tr/td[2]/a')
 
     Path("output").mkdir(parents=True, exist_ok=True)
@@ -15,10 +16,13 @@ def save_csv(element):
 
     with open(file_name, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
-        for company in companies:
+        i = 0
+        while i < 500:
+            company = companies[i]
             name = company.text
             url = company.get_attribute('href')
             writer.writerow([name, url])
+            i = i + 1
 
 
 if __name__ == "__main__":
@@ -34,6 +38,10 @@ if __name__ == "__main__":
             EC.presence_of_element_located(
                 (By.ID, "cross_rate_markets_stocks_1"))
         )
+        driver.find_element_by_xpath('//th[@data-col-caption="Vol"]')
+        driver.implicitly_wait(5)
+        driver.find_element_by_xpath('//th[@data-col-caption="Vol"]')
+        driver.implicitly_wait(5)
         save_csv(element)
         print('Create companies.csv')
     finally:
