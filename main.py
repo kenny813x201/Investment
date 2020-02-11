@@ -9,6 +9,7 @@ import csv
 
 def save_csv(element):
     """Save top 500 stocks in base on volumn"""
+    print("Saving companies.csv...")
     companies = element.find_elements_by_xpath('./tbody/tr/td[2]/a')
 
     Path("output").mkdir(parents=True, exist_ok=True)
@@ -27,9 +28,13 @@ def save_csv(element):
 
 if __name__ == "__main__":
 
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    # options.add_argument("headless")
+    driver = webdriver.Chrome(options=options)
+
     driver.get("https://au.investing.com/equities/australia")
 
+    driver.implicitly_wait(5)
     all_stocks = driver.find_element_by_xpath(
         '//select[@id="stocksFilter"]/option[@id="all"]')
     all_stocks.click()
@@ -43,7 +48,7 @@ if __name__ == "__main__":
         driver.find_element_by_xpath('//th[@data-col-caption="Vol"]')
         driver.implicitly_wait(5)
         save_csv(element)
-        print('Create companies.csv')
+        print('companies.csv created')
     finally:
         driver.quit()
     driver.quit()
